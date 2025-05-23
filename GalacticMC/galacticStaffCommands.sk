@@ -1,0 +1,254 @@
+################################################################################################################
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+#                                                                                                              #
+#                                                 SKRIPT OWNED & MAINTAINED                                    #
+#                                                     By ItzNeerslag_                                          #
+#                                                                                                              #
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+################################################################################################################
+
+
+
+################################ Restart Server ################################
+command /restart:
+    permission: admin.restart
+    permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+    trigger:
+        if player has permission "staff.restart":
+            send title "%{prefix}% &cRestarting server in 10 seconds!"
+            wait 5 seconds
+            send action bar "%{prefix}% &cRestarting server in 5 seconds" to player
+            wait 1 seconds
+            send action bar "%{prefix}% &cRestarting server in 4 seconds!" to player
+            wait 1 seconds
+            send action bar "%{prefix}% &cRestarting server in 3 seconds!" to player
+            wait 1 seconds
+            send action bar "%{prefix}% &cRestarting server in 2 seconds!" to player
+            wait 1 seconds
+            send action bar "%{prefix}% &cRestarting server in 1 seconds!" to player
+            wait 1 seconds
+            send action bar "%{prefix}% &cRestarting server now!" to player
+            wait 1 seconds
+            restart server
+################################ Give hunger ################################
+command /givehunger:
+	permission: admin.give.givehunger
+	permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+	trigger:
+		set the food level of player to 1
+		remove 9 from player's health
+################################ Give Fishing Rod ################################
+command /giverod <text>:
+	permission: admin.give.giverod
+	permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+	trigger:
+		if arg-1 is "T1":
+			give player fishing rod of lure 1 and luck of the sea 1 named "&8[&7Beginner Rod&8]&7 T1" with lore " " and "&3Time per Catch:" and "&720sec" and " " and "<#3b4fa1>Rarity:" and "&8⭐"
+		if arg-1 is "T2":
+			give player fishing rod of lure 1 and luck of the sea 2 named "&8[<#556938>Advanced Rod&8]<#556938> T2" with lore " " and "&3Time per Catch:" and "&718sec" and " " and "<#3b4fa1>Rarity:" and "<#556938>⭐⭐"
+		if arg-1 is "T3":
+			give player fishing rod of lure 2 and luck of the sea 2 named "&8[&eExpert Rod&8]&e T3" with lore " " and "&3Time per Catch:" and "&715sec" and " " and "<#3b4fa1>Rarity:" and "&e⭐⭐⭐"
+		if arg-1 is "T4":
+			give player fishing rod of lure 2 and luck of the sea 3 named "&8[&6Epic Rod&8]&6 T4" with lore " " and "&3Time per Catch:" and "&712sec" and " " and "<#3b4fa1>Rarity:" and "&6⭐⭐⭐⭐"
+		if arg-1 is "T5":
+			give player fishing rod of lure 3 and luck of the sea 4 named "&8[<#781a1a>Flame Rod&8]&4 T5" with lore " " and "&3Time per Catch:" and "&710sec" and " " and "<#3b4fa1>Rarity:" and "&c⭐⭐⭐⭐⭐"
+		if arg-1 is "T6":
+			give player fishing rod of lure 3 and luck of the sea 4 named "&8[<#45bfb9>Ice Rod&8]&3 T6" with lore " " and "&3Time per Catch:" and "&78sec" and " " and "<#3b4fa1>Rarity:" and "&b⭐⭐⭐⭐⭐⭐"
+		if arg-1 is "T7":
+			give player fishing rod of lure 5 and luck of the sea 5 named "&d&k;&8[<#483063>Galactic Rod&8]&d&k;&d T7" with lore " " and "&3Time per Catch:" and "&76sec" and " " and "<#3b4fa1>Rarity:" and "&d⭐⭐⭐⭐⭐⭐⭐"
+################################ Give Kills ################################
+command /givekill [<offlineplayer>] <number>:
+    permission: admin.give.givekills
+    permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+    trigger:
+        add arg-2 to {kills::%{uuid::%arg-1%}%}
+        send "%{prefix}% &aSuccesfully gave %arg-1% %arg-2% &akills."
+################################ Resets Kills ################################
+command /resetkills:
+    permission: admin.give.resetkills
+    permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+    trigger:
+        delete {kills::*}
+
+################################################## Give any amount of clicks ##################################################      
+
+command /giveclicks [<offline player>] <number>:
+	permission: admin.give.giveclicks
+	permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+	trigger:
+		if arg-1 is set:
+			if arg-2 < 1000000000:
+				set {numberInput} to arg-2
+				set {numberInputDeny} to 1000000000
+				add arg-2 to {clickTeller::%{uuid::%arg-1%}%}
+				send "%{prefix}%&a Succesfully gave %arg-1% %formatNumber({numberInput})%" to player
+				send "%{prefix}%&a %formatNumber({numberInput})%&a clicks have been added to your account!" to arg-1
+			else if arg-2 > 1000000000:
+				send "&cHoldon there dipshit of an admin! You cannot summon that many clicks!"
+				send "&cPlease pick a number below %formatNumber({numberInputDeny})%"
+
+################################################# Multiplier Add / Remove #################################################
+command /multi <text> [<offline player>] <number>:
+	permission: admin.multiplier.*
+	permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+	usage: &cInvalid syntax. Please use &4/click <add/remove> <player> <number>&c.
+	trigger:
+		if arg-1 is "give":
+			if arg-2 is set:
+				if arg-3 is set:
+					if arg-3 < 1000:
+						add arg-3 to {clickMultiplier::%{uuid::%arg-2%}%}
+						send "%{prefix}% &7Server added &3x%arg-3%&7 to your total multiplier." to arg-2
+						send "%{prefix}% &7Succesfully gave &a%arg-2%&7 a multiplier of &3x%arg-3%." to player
+					else:
+						send "%{prefix}% &cYou cannot give a multiplier higher then 1000!" to player
+						stop
+		else if arg-1 is "remove":
+			if arg-2 is set:
+				if arg-3 is set:
+					remove arg-3 from {clickMultiplier::%{uuid::%arg-2%}%}
+					send "%{prefix}% &aSuccesfully removed &3x%arg-3% &3multiplier from &3%arg-2%&a." to player
+					send "%{prefix}% &c&l[&4&l!&c&l] &3x%arg-3% &3multiplier is removed from your account." to arg-2
+
+################################################# Admin Clicker Menu #################################################
+command /getclicker:
+	permission: admin.give.getclicker
+	permission message: %{prefix}% &cYou need to be atleast an &4Admin&c on the server to do this!
+	trigger:
+		create a gui with id "clickerpanel::%{uuid::%player%}%" with virtual chest inventory with 6 rows named "&8&l[&4&lAdmin Clicker Panel&8&l]" and shape "xxxxZxxxx", "x16AFKPUx", "x27BGLQVx", "x38CHMRWx", "x49DINSXx", and "x50EJOTYx":
+			make gui slot "x" with black stained glass pane 
+			make gui slot "Z" with spruce sign named "&c&lAdmin Panel" with lore "&7Pick a clicker you would like to get!"
+			make gui slot "1" with stick named "&8[&7Beginner&8]&7 Clicks +1"
+			make gui slot "2" with stick named "&8[&7Beginner&8]&7 Clicks +5"
+			make gui slot "3" with stick named "&8[&7Beginner&8]&7 Clicks +10"
+			make gui slot "4" with stick named "&8[&7Beginner&8]&7 Clicks +20"
+			make gui slot "5" with stick named "&8[&7Beginner&8]&7 Clicks +40"
+
+			make gui slot "6" with wooden shovel named "&8[&3Experienced&8]&7 Clicks +50"
+			make gui slot "7" with stone shovel named "&8[&3Experienced&8]&7 Clicks +60"
+			make gui slot "8" with golden shovel named "&8[&3Experienced&8]&7 Clicks +80"
+			make gui slot "9" with diamond shovel named "&8[&3Experienced&8]&7 Clicks +100"
+			make gui slot "0" with netherite shovel named "&8[&3Experienced&8]&7 Clicks +150"
+
+			make gui slot "A" with blaze rod named "&8[&6Advanced&8]&c Clicks +200"
+			make gui slot "B" with blaze powder named "&8[&6Advanced&8]&c Clicks +250"
+			make gui slot "C" with red dye named "&8[&6Advanced&8]&c Clicks +300"
+			make gui slot "D" with firework star named "&8[&6Advanced&8]&c Clicks +350"
+			make gui slot "E" with magma cream named "&8[&6Advanced&8]&c Clicks +500"
+
+			make gui slot "F" with friend pottery sherd named "&5[&dExpert&5]&d Clicks +600"
+			make gui slot "G" with miner pottery sherd named "&5[&dExpert&5]&d Clicks +700"
+			make gui slot "H" with mourner pottery sherd named "&5[&dExpert&5]&d Clicks +800"
+			make gui slot "I" with prize pottery sherd named "&5[&dExpert&5]&d Clicks +900"
+			make gui slot "J" with heart pottery sherd named "&5[&dExpert&5]&d Clicks +1000"
+
+			make gui slot "K" with light blue stained glass named "&8[&cMaster&8]&c Clicks +2000"
+			make gui slot "L" with blue stained glass named "&8[&cMaster&8]&c Clicks +2500"
+			make gui slot "M" with ice named "&8[&cMaster&8]&c Clicks +3000"
+			make gui slot "N" with packed ice named "&8[&cMaster&8]&c Clicks +3500"
+			make gui slot "O" with blue ice named "&8[&cMaster&8]&c Clicks +5000"
+
+			make gui slot "P" with red concrete named "&c&lComing soon"
+			make gui slot "Q" with red concrete named "&c&lComing soon"
+			make gui slot "R" with red concrete named "&c&lComing soon"
+			make gui slot "S" with red concrete named "&c&lComing soon"
+			make gui slot "T" with red concrete named "&c&lComing soon"
+
+			make gui slot "U" with red concrete named "&c&lComing soon"
+			make gui slot "V" with red concrete named "&c&lComing soon"
+			make gui slot "W" with red concrete named "&c&lComing soon"
+			make gui slot "X" with red concrete named "&c&lComing soon"
+			make gui slot "Y" with red concrete named "&c&lComing soon"
+			open last gui for the player
+
+on inventory click:
+	if type of event-inventory is not player inventory:		
+		if name of event-inventory contains "&8&l[&c&lAdmin GetClicker&8&l]":
+######Beginner Clickers			
+			if index of event-slot is 10:
+				give player a stick named "&8[&7Beginner&8]&7 Clicks +1"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!" to player
+			else if index of event-slot is 19:
+				give player a stick named "&8[&7Beginner&8]&7 Clicks +5"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 28:
+				give player a stick named "&8[&7Beginner&8]&7 Clicks +10"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 37:
+				give player a stick named "&8[&7Beginner&8]&7 Clicks +20"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 46:
+				give player a stick named "&8[&7Beginner&8]&7 Clicks +40"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+######Experienced Clickers						
+			else if index of event-slot is 11:
+				give player a wooden shovel named "&8[&3Experienced&8]&7 Clicks +50"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!" to player
+			else if index of event-slot is 20:
+				give player a stone shovel named "&8[&3Experienced&8]&7 Clicks +60"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 29:
+				give player a golden shovel named "&8[&3Experienced&8]&7 Clicks +80"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 38:
+				give player a diamond shovel named "&8[&3Experienced&8]&7 Clicks +100"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 47:
+				give player a netherite shovel named "&8[&3Experienced&8]&7 Clicks +150"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+######Advanced Clickers						
+			else if index of event-slot is 12:
+				give player a blaze rod named "&8[&6Advanced&8]&c Clicks +200"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!" to player
+			else if index of event-slot is 21:
+				give player a blaze powder named "&8[&6Advanced&8]&c Clicks +250"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 30:
+				give player a red dye named "&8[&6Advanced&8]&c Clicks +300"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 39:
+				give player a firework star named "&8[&6Advanced&8]&c Clicks +350"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 48:
+				give player a magma cream named "&8[&6Advanced&8]&c Clicks +500"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+######Expert Clickers										
+			else if index of event-slot is 13:
+				give player friend pottery sherd named "&5[&dExpert&5]&d Clicks +600"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!" to player
+			else if index of event-slot is 22:
+				give player miner pottery sherd named "&5[&dExpert&5]&d Clicks +700"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 31:
+				give player mourner pottery sherd named "&5[&dExpert&5]&d Clicks +800"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 40:
+				give player prize pottery sherd named "&5[&dExpert&5]&d Clicks +900"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 49:
+				give player heart pottery sherd named "&5[&dExpert&5]&d Clicks +1000"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"	
+######Master Clickers					
+			else if index of event-slot is 14:
+				give player light blue stained glass named "&8[&cMaster&8]&c Clicks +2000"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!" to player
+			else if index of event-slot is 23:
+				give player blue stained glass named "&8[&cMaster&8]&c Clicks +2500"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 32:
+				give player ice named "&8[&cMaster&8]&c Clicks +3000"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 41:
+				give player packed ice named "&8[&cMaster&8]&c Clicks +3500"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+			else if index of event-slot is 50:
+				give player blue ice named "&8[&cMaster&8]&c Clicks +5000"
+				send "&8[&4AdminPanel&8] &7>> &aSuccesfully gave you a clicker!"
+
+################################ Tab Completion ################################
+on tab complete of "/givekill":
+	set tab completions for position 2 to "inputnumberhere", "100", "1000", "10000", "100000" and "1000000"
+
+on tab complete of "/multi":
+	set tab completions for position 1 to "give" and "remove"
+	set tab completions for position 3 to "inputnumberhere", "100", "1000", "10000", "100000" and "1000000"

@@ -1,0 +1,181 @@
+################################################################################################################
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+#                                                                                                              #
+#                                                 SKRIPT OWNED & MAINTAINED                                    #
+#                                                     By ItzNeerslag_                                          #
+#                                                                                                              #
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+################################################################################################################
+command /pets:
+    trigger:
+        create a gui with id "Pets::%{uuid::%player%}%" with virtual chest inventory with 3 rows named "&aPets" and shape "xxxxlxxxx", "xxaxbxcxx", "xxxxpxxxm":
+            make gui slot "x" with black stained glass pane named " "
+            make gui slot "a" with zombie head named "Zombie pet"
+            make gui slot "b" with skeleton skull named "Skeleton pet"
+            make gui slot "c" with creeper head named "Creeper pet"
+            make gui slot "p" with barrier named "close"
+            make gui slot "l" with barrel named "Remove pet"
+            make gui slot "m" with stone button named "next"
+        open gui with id "Pets::%{uuid::%player%}%" to player
+
+
+on inventory click:
+    if name of event-inventory contains "&aPets":
+        if index of event-slot is 11:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to zombie head
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+
+        if index of event-slot is 13:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to Skeleton head
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 15:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to Creeper head
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 4:
+            kill {pets::%player's uuid%}
+            delete {pets::%player's uuid%}
+
+        if index of event-slot is 22:
+            close inventory of player
+
+        if index of event-slot is 26:
+            create a gui with id "PetsNext::%{uuid::%player%}%" with virtual chest inventory with 3 rows named "&ePets" and shape "xxxxxxxxx", "xxaxbxcxx", "mxxxpxxxn":
+                make gui slot "x" with black stained glass pane named " "
+                make gui slot "a" with piglin head named "Piglin pet"
+                make gui slot "b" with wither skeleton skull named "Wither skeleton pet"
+                make gui slot "c" with dragon head named "Dragon pet"
+                make gui slot "m" with stone button named "&fBack"
+                make gui slot "p" with barrier named "&cClose"
+                make gui slot "n" with stone button named "&fNext"
+            open gui with id "PetsNext::%{uuid::%player%}%" to player
+
+on inventory click:
+    if name of event-inventory contains "&ePets":
+        if index of event-slot is 11:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to piglin head
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 13:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to Wither skeleton skull
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 15:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to Dragon head
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 18:
+            open gui with id "Pets::%{uuid::%player%}%" to player
+
+        if index of event-slot is 22:
+            close player's inventory
+
+        if index of event-slot is 26:
+            create a gui with id "PetsNew::%{uuid::%player%}%" with virtual chest inventory with 3 rows named "&cPets" and shape "xxxxxxxxx", "xxxxpxxxx", "axxxbxxxx":
+                make gui slot "x" with black stained glass pane named " "
+                make gui slot "p" with skull of player
+                make gui slot "a" with stone button named "&bBack"
+                make gui slot "b" with barrier named "&cClose"
+            open gui with id "PetsNew::%{uuid::%player%}%" to player
+
+on inventory click:
+    if name of event-inventory contains "&cPets":
+        if index of event-slot is 13:
+            if {pets::%player's uuid%} is set:
+                kill {pets::%player's uuid%}
+                delete {pets::%player's uuid%}
+            if {pets::%player's uuid%} is not set:
+                set {_head} to skull of player
+                spawn armor stand at player with nbt from "{Small:1b,Invisible:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:2039583}"
+                set {_pet} to last spawned entity
+                set {_pet}'s display name to "&6%player%'s pet"
+                set helmet of {_pet} to {_head}
+                set {pets::%player's uuid%} to {_pet}
+                while {pets::%player's uuid%} is alive:
+                    if distance between player and {pets::%player's uuid%} is greater than 1:
+                        teleport {pets::%player's uuid%} 2 blocks behind player
+                    wait 1 tick
+
+        if index of event-slot is 18:
+            open gui with id "PetsNext::%{uuid::%player%}%" to player
+
+        if index of event-slot is 22:
+            close player's inventory
+            
+on quit:
+    kill {pets::%player's uuid%}
+    delete {pets::%player's uuid%}

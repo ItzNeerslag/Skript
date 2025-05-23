@@ -1,0 +1,259 @@
+################################################################################################################
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+#                                                                                                              #
+#                                                 SKRIPT OWNED & MAINTAINED                                    #
+#                                                     By ItzNeerslag_                                          #
+#                                                                                                              #
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+################################################################################################################
+#================================================================================================================================================
+command /tp [<player>]:
+    permission: sk.tp
+    trigger:
+        teleport player to arg-1
+        send "%{prefix}% &aYou teleported to &f%arg-1%&a!" to player
+
+command /tphere [<player>]:
+    permission: sk.tphere
+    trigger:
+        teleport arg-1 to player
+        send "%{prefix}% &aYou teleported &f%arg-1% &ato you!" to player
+        send "%{prefix}% &aYou were teleported to &f%player%&a!" to arg-1
+
+command /tpall:
+    permission: sk.tpall
+    trigger:
+        send "%{prefix}% &aYou teleported all players to you!" to player
+        loop all players:
+            if loop-player is not player:
+                teleport loop-player to player
+                send "%{prefix}% &aYou were teleported to &f%player%&a!" to loop-player
+#================================================================================================================================================
+command /setprefix <text>:
+	permission: essentials.dev 
+	trigger:
+		set {_x} to formatted arg-1
+		replace all "&f&l|" with "" in {_x}
+		set {prefix} to "%{_x}% &7&l»"
+		send "%{prefix}% &aYou changed the prefix!" to player
+		
+on tab complete of "bukkit:ver" and "bukkit:version":
+	cancel event
+#================================================================================================================================================
+#Change Gamemode
+command /gmc [<player>]:
+	permission: sk.gmc
+	trigger:
+		if arg-1 is set:
+			set gamemode of arg-1 to creative
+			set {fly.%player%} to true
+			send "%{prefix}% &7Gamemode of %arg-1% changed to &6creative!" to player
+			send "%{prefix}% &7Gamemode changed to &6creative!" to arg-1
+		if arg-1 is not set:
+			set player's gamemode to creative
+			set {fly.%player%} to true
+			send "%{prefix}% &7Gamemode changed to &6creative!" to player
+		
+command /gms [<player>]:
+	permission: sk.gms
+	trigger:
+		if arg-1 is set:
+			set gamemode of arg-1 to survival
+			set {fly.%player%} to false
+			send "%{prefix}% &7Gamemode of %arg-1% changed to &6survival!" to player
+			send "%{prefix}% &7Gamemode changed to &6survival!" to arg-1
+		if arg-1 is not set:
+			set player's gamemode to survival
+			set {fly.%player%} to false
+			send "%{prefix}% &7Gamemode changed to &6survival!" to player
+	
+command /gmsp [<player>]:
+	permission: sk.gmsp
+	trigger:
+		if arg-1 is set:
+			set gamemode of arg-1 to spectator
+			send "%{prefix}% &7Gamemode of %arg-1% changed to &6spectator!" to player
+			send "%{prefix}% &7Gamemode changed to &6spectator!" to arg-1
+		if arg-1 is not set:
+			set player's gamemode to spectator
+			send "%{prefix}% &7Gamemode changed to &6spectator!" to player
+#================================================================================================================================================
+command /setfly [<player>]:
+	permission: sk.flyothers
+	trigger:
+		if arg-1 is set:
+			if flight mode of arg-1 is false:
+				set flight mode of arg-1 to true
+				send "%{prefix}% &7Fly mode: &aenabled&7 for &6%arg-1%" to player
+				send "%{prefix}% &7Fly mode: &aenabled" to arg-1
+				stop
+			if flight mode of arg-1 is true:
+				set flight mode of arg-1 to false
+				send "%{prefix}% &7Fly mode: &cdisabled&7 for &6%arg-1%" to player
+				send "%{prefix}% &7Fly mode: &cdisabled" to arg-1
+				stop
+
+command /fly:
+	permission: sk.fly
+	trigger:
+		if player's flight mode is false:
+			set player's flight mode to true
+			send "%{prefix}% &7Fly mode: &aenabled" to player
+			stop
+		set player's flight mode to false
+		send "%{prefix}% &7Fly mode: &cdisabled" to player
+#===============================================================================================================================================#
+command /hat:
+	permission: sk.hat
+	trigger:
+		set {_tool} to player's tool
+		set {_hat} to player's helmet
+		set player's helmet to {_tool}
+		set player's tool to {_hat}
+#================================================================================================================================================
+#Open Players enderchest
+command /endersee [<player>]:
+	permission: sk.endersee
+	trigger:
+		if arg-1 is set:
+			open enderchest of arg-1 to player
+		if arg-1 is not set:
+			open enderchest of player to player
+
+command /ec:
+	trigger:
+		open ender chest of player to player
+
+#================================================================================================================================================	
+#Invsee
+function saveInventoryPlayer(p: player):
+    set {_uuid} to uuid of {_p}
+    delete {offlineInventory.%{_uuid}%::*}
+    set {_counter} to 0
+    loop 36 times:
+        add slot {_counter} of {_p}'s inventory to {offlineInventory.%{_uuid}%::*}
+        add 1 to {_counter}
+
+function saveInventoryOfflinePlayer(inv: inventory, p: offline player):
+    set {_uuid} to uuid of {_p}
+    delete {offlineInventory.%{_uuid}%::*}
+    set {_counter} to 0
+    loop 36 times:
+        add slot {_counter} of {_inv} to {offlineInventory.%{_uuid}%::*}
+        add 1 to {_counter}
+
+function retrievePlayerInventory(inv: inventory, p: offline player):
+    set {_uuid} to uuid of {_p}
+    set {_counter} to 1
+    loop 36 times:
+        set slot {_counter}-1 of {_inv} to {offlineInventory.%{_uuid}%::%{_counter}%}
+        add 1 to {_counter}
+
+on join:
+    size of {offlineInventory.%uuid of player%::*} is not 0
+    retrievePlayerInventory(player's inventory, player)
+    loop all players:
+        if metadata value "Invsee" of loop-player is "%player%":
+            set metadata value "CancelInvsee" of loop-player to "True"
+            send "&c%player% &7just logged in, your invsee has been updated." to loop-player
+            wait 10 ticks
+            close loop-player's inventory
+            open player's inventory to loop-player
+
+on quit:
+    saveInventoryPlayer(player)
+    loop all players:
+        if loop-player's current inventory is player's inventory:
+            set metadata value "CancelInvsee" of loop-player to "True"
+            send "&c%player% &7just logged in, your invsee has been updated." to loop-player
+            wait 10 ticks
+            close loop-player's inventory
+            make loop-player execute command "iv %player%"
+
+on inventory close:
+    metadata value "Invsee" of player is set
+    if metadata value "CancelInvsee" of player is not set:
+        set {_p} to metadata value "Invsee" of player
+        set {_p} to "%{_p}%" parsed as offline player
+        saveInventoryOfflinePlayer(player's current inventory, {_p})
+    delete metadata value "Invsee" of player
+    delete metadata value "CancelInvsee" of player
+
+command /invsee <offline player>:
+    aliases: invsee
+    permission: invsee.use
+    permission message: %{prefix}% &cYou do not have permission to execute this command.
+    trigger:
+        if arg is set:
+            if arg is online:
+                open arg's inventory to player
+            else:
+                if arg has played before:
+                    if size of {offlineInventory.%uuid of arg%::*} is not 0:
+                        set metadata value "Invsee" of player to "%arg%"
+                        open chest inventory with 4 rows named "Inventory of %arg%" to player
+                        retrievePlayerInventory(player's current inventory, arg 1)
+                        while name of player's current inventory is "%arg%'s Inventory":
+                            saveInventoryOfflinePlayer(player's current inventory, arg)
+                            wait 3 ticks
+                    else:
+                        message "%{prefix}% &cThat player has played before, but they haven't joined since this script was added so there is no saved inventory data..."
+                else:
+                    message "%{prefix}% &cThat player has not played before."
+        else:
+            message "%{prefix}% &7View a player or offline player's inventory."
+            message "%{prefix}% &7/invsee <player>"
+#================================================================================================================================================	
+options:
+  error: &c&l[!]
+  prefix: &8[&6StaffChat&8]
+  toggle: on 
+  chattoggle: off 
+  command: sc
+
+command /staffchat:
+  aliases: /scinfo
+  trigger:
+    send "{@error} &7Staffchat made by &aItzRepsac_&b." to player
+    send "&cUsage: /staffchat <on>"
+
+command /staffchat [<text>]:
+  aliases: /sc
+  permission: sc.use
+  permission message: &c&l[!] &7You need permission &c&lsc.use &7to access Staff Chat!
+  trigger:
+    loop all players:
+      if loop-player has permission "sc.use":
+        if arg 1 is not set: 
+          send "{@error} &cPlease supply a message!" to player
+        if arg-1 is "{@toggle}":
+          set {sc::%player%} to true
+          send "{@prefix} is now &aEnabled&7." to player
+        if arg-1 is "{@chattoggle}":
+          send "{@prefix} is now &cdisabled&7." to player
+          set {sc::%player%} to false
+on chat:
+  if {sc::%player%} is true:
+    cancel event
+    loop all players:
+      if loop-player has permission "sc.use":
+        send "{@prefix} &3%player's display name% &7» &b%message%" to loop-player
+#================================================================================================================================================	
+#Deny view plugins
+on command "/bukkit:plugins":
+	if player does not have the permission "sk.viewplugins":
+		cancel event
+		send "&fPlugins (1): &aSkript&f, &aMore Skript&f, &aAnd some skript&f." to player
+on command "/plugins":
+	if player does not have the permission "plugins.view":
+		cancel event
+		send "&fPlugins (1): &aSkript&f, &aMore Skript&f, &aAnd some skript&f." to player
+on command "/bukkit:pl":
+	if player does not have the permission "plugins.view":
+		cancel event
+		send "&fPlugins (1): &aSkript&f, &aMore Skript&f, &aAnd some skript&f." to player
+on command "/pl":
+	if player does not have the permission "plugins.view":
+		cancel event
+		send "&fPlugins (1): &aSkript&f, &aMore Skript&f, &aAnd some skript&f." to player
+#===============================================================================================================================================#

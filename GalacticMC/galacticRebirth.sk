@@ -1,0 +1,219 @@
+################################################################################################################
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+#                                                                                                              #
+#                                                 SKRIPT OWNED & MAINTAINED                                    #
+#                                                     By ItzNeerslag_                                          #
+#                                                                                                              #
+#                               !! Selling or sharing this skript is strictly prohibited !!                    #
+################################################################################################################
+on load:
+	send "&8[&bGalacticMC ~ Rebirth&8] &aSuccesfully loaded!" to console
+    
+options:
+	clicksW0: 10k Clicks
+	clicksW1: 150k Clicks
+	clicksW2: 750k Clicks
+	clicksW3: 5M Clicks
+	clicksW4: 20M Clicks				
+	clicksW5: 15M Clicks		
+	clicksW6: 45M Clicks	
+	clicksW7: 100M Clicks			
+    
+on inventory click:
+	if name of event-inventory contains "&8&l[&4&lRebirth Information&8&l]":
+		cancel event
+################################################################################################################
+command /rebirth:
+	trigger:
+		if {clickRebirth::%{uuid::%player%}%} = 0:
+			createRebirthMenu(player, "0")
+		if {clickRebirth::%{uuid::%player%}%} = 1:
+			createRebirthMenu(player, "1")
+		if {clickRebirth::%{uuid::%player%}%} = 2:
+			createRebirthMenu(player, "2")
+		if {clickRebirth::%{uuid::%player%}%} = 3:
+			createRebirthMenu(player, "3")
+		if {clickRebirth::%{uuid::%player%}%} = 4:
+			createRebirthMenu(player, "4")				
+################################################# Handle inventory click events #################################################        
+on inventory click:
+	if name of event-inventory contains "&8&l[ &c&lRebirth&4 %{clickRebirth::%{uuid::%player%}%}% &8➤ &4%1+{clickRebirth::%{uuid::%player%}%}% &8&l]":
+		if index of event-slot is 11:
+			checkPrestigeItem(player)												
+			if {clickRebirth::%{uuid::%player%}%} = 0:
+				if {_reqItemWorld1} = true:
+					if {clickTeller::%{uuid::%player%}%} >= 10000:
+						set {clickTeller::%{uuid::%player%}%} to 0
+						clear player's inventory
+						clear player's enderchest
+						make console execute command "pvdel %player% all"
+						set slot 0 of player to a stick named "&8[&7Beginner&8]&7 Clicks +1"
+						set slot 6 of player to {worldmenu::%{uuid::%player%}%}
+						set slot 7 of player to {shopmenu::%{uuid::%player%}%}
+						set slot 8 of player to {profilemenu::%{uuid::%player%}%} 																		
+						add 0.75 to {clickMultiplier::%{uuid::%player%}%}
+						add 1 to {clickRebirth::%{uuid::%player%}%}
+						play sound "entity.experience_orb.pickup" at pitch 1 to player
+						send " " to player
+						send "&8&m=======&8[&a&lRebirthed Succesfully!!&8]&m=======" to player
+						send "&c&lWhat you have lost:" to player
+						send "&4- &cAll your clicks" to player
+						send "&4- &8[&7Beginner&8]&7 Clicks +40" to player
+						send " " to player
+						send "<##06d154>&lWhat you have gained:" to player
+						send "&2+ &aAn additional permanent 0.75 multiplier!" to player
+						send "&2+ &aAccess to the <##d19b06>&nDesert World&a!" to player
+						close player's inventory
+						make console execute command "lp user %player% parent add rebrith"
+						stop
+					else if {clickTeller::%{uuid::%player%}%} < 10000:
+						cancel event
+						close player's inventory
+						play sound "entity.villager.no" at pitch 1 to player
+						send " " to player
+						send "&cYou do not have the &4required items&c to rebirth:" to player
+						send "&4- &6⛃&e {@clicksW0}." to player
+				else if {_found} is false: 
+					close player's inventory
+					play sound "entity.villager.no" at pitch 1 to player
+					send " " to player
+					send "&cYou do not have the &4required items&c to rebirth:" to player
+					send "&4- &8[&7Beginner&8]&7 Clicks +40" to player
+					send "&4- &6⛃&e {@clicksW0}." to player
+
+##Rebirth 2
+			if {clickRebirth::%{uuid::%player%}%} = 1:
+				if {_reqItemWorld2} = true:
+					if {clickTeller::%{uuid::%player%}%} >= 150000:
+						if player has permission "reb1.sk":
+							set {clickTeller::%{uuid::%player%}%} to 0
+							clear player's inventory
+							clear player's enderchest
+							make console execute command "pvdel %player% all"							
+							set slot 0 of player to a stick named "&8[&7Beginner&8]&7 Clicks +1"
+							set slot 6 of player to {worldmenu::%{uuid::%player%}%}
+							set slot 7 of player to {shopmenu::%{uuid::%player%}%}
+							set slot 8 of player to {profilemenu::%{uuid::%player%}%}                           
+							add 0.75 to {clickMultiplier::%{uuid::%player%}%}
+							add 1 to {clickRebirth::%{uuid::%player%}%}
+							play sound "entity.experience_orb.pickup" at pitch 1 to player
+							send " " to player
+							send "&8&m=======&8[&a&lRebirthed Succesfully!!&8]&m=======" to player
+							send "&c&lWhat you have lost:" to player
+							send "&4- &cAll your clicks" to player
+							send "&4- &8[&3Experienced&8]&7 Clicks +150" to player
+							send " " to player
+							send "<##06d154>&lWhat you have gained:" to player
+							send "&2+ &aAn additional 0.75 multiplier!" to player
+							send "&2+ &aAccess to <#b54545>&nVulcano World&a!" to player
+							close player's inventory
+							make console execute command "lp user %player% parent remove rebrith"
+							make console execute command "lp user %player% parent add rebirth-2"
+							stop
+					else if {clickTeller::%{uuid::%player%}%} < 150000:
+						cancel event
+						close player's inventory
+						play sound "entity.villager.no" at pitch 1 to player
+						send " " to player
+						send "&cYou do not have the &4required items&c to rebirth:" to player
+						send "&4- &6⛃&e {@clicksW1}." to player
+				else if {_found} is false:
+					close player's inventory
+					play sound "entity.villager.no" at pitch 1 to player
+					send " " to player
+					send "&cYou do not have the &4required items&c to rebirth:" to player
+					send "&4- &8[&3Experienced&8]&7 Clicks +150" to player
+					send "&4- &6⛃&e {@clicksW1}." to player
+##Rebirth 3
+			if {clickRebirth::%{uuid::%player%}%} = 2:
+				if {_reqItemWorld3} = true:
+					if {clickTeller::%{uuid::%player%}%} >= 750000:
+						if player has permission "reb2.sk":
+							set {clickTeller::%{uuid::%player%}%} to 0
+							clear player's inventory
+							clear player's enderchest
+							make console execute command "pvdel %player% all"							
+							set slot 0 of player to a stick named "&8[&7Beginner&8]&7 Clicks +1"
+							set slot 6 of player to {worldmenu::%{uuid::%player%}%}
+							set slot 7 of player to {shopmenu::%{uuid::%player%}%}
+							set slot 8 of player to {profilemenu::%{uuid::%player%}%}                           
+							add 0.75 to {clickMultiplier::%{uuid::%player%}%}
+							add 1 to {clickRebirth::%{uuid::%player%}%}
+							play sound "entity.experience_orb.pickup" at pitch 1 to player
+							send " " to player
+							send "&8&m=======&8[&a&lRebirthed Succesfully!!&8]&m=======" to player
+							send "&c&lWhat you have lost:" to player
+							send "&4- &cAll your clicks" to player
+							send "&4- &8[&6Advanced&8]&c Clicks +500" to player
+							send " " to player
+							send "<##06d154>&lWhat you have gained:" to player
+							send "&2+ &aAn additional 0.75 multiplier!" to player
+							send "&2+ &aAccess to <#8534bf>Rune world&a!" to player
+							close player's inventory
+							make console execute command "lp user %player% parent remove rebirth-2"
+							make console execute command "lp user %player% parent add rebirth-3"
+							stop
+						else:
+							send "wrong perm" to player
+					else if {clickTeller::%{uuid::%player%}%} < 750000:
+						cancel event
+						close player's inventory
+						play sound "entity.villager.no" at pitch 1 to player
+						send " " to player	
+						send "&cYou do not have the &4required items&c to rebirth:" to player
+						send "&4- &6⛃&e {@clicksW2}." to player
+				else if {_found} is false:
+					close player's inventory
+					play sound "entity.villager.no" at pitch 1 to player
+					send " " to player
+					send "&cYou do not have the &4required items&c to rebirth:" to player
+					send "&4- &8[&6Advanced&8]&c Clicks +500" to player
+					send "&4- &6⛃&e {@clicksW2}." to player
+##Rebirth 4					
+			if {clickRebirth::%{uuid::%player%}%} = 3:
+				if {_reqItemWorld4} = true:
+					if {clickTeller::%{uuid::%player%}%} >= 5000000:
+						if player has permission "reb3.sk":
+							set {clickTeller::%{uuid::%player%}%} to 0
+							clear player's inventory
+							clear player's enderchest
+							make console execute command "pvdel %player% all"
+							set slot 0 of player to a stick named "&8[&7Beginner&8]&7 Clicks +1"
+							set slot 6 of player to {worldmenu::%{uuid::%player%}%}
+							set slot 7 of player to {shopmenu::%{uuid::%player%}%}
+							set slot 8 of player to {profilemenu::%{uuid::%player%}%}                          
+							add 0.75 to {clickMultiplier::%{uuid::%player%}%}
+							add 1 to {clickRebirth::%{uuid::%player%}%}
+							play sound "entity.experience_orb.pickup" at pitch 1 to player
+							send " " to player
+							send "&8&m=======&8[&a&lRebirthed Succesfully!!&8]&m=======" to player
+							send "&c&lWhat you have lost:" to player
+							send "&4- &cAll your clicks" to player
+							send "&4- &8[&6Advanced&8]&c Clicks +500" to player
+							send " " to player
+							send "<##06d154>&lWhat you have gained:" to player
+							send "&2+ &aAn additional 0.75 multiplier!" to player
+							send "&2+ &aAccess to &bIcy world&a!" to player
+							close player's inventory
+							make console execute command "lp user %player% parent remove rebirth-2"
+							make console execute command "lp user %player% parent add rebirth-3"
+							stop
+						else:
+							send "wrong perm" to player
+					else if {clickTeller::%{uuid::%player%}%} < 5000000:
+						cancel event
+						close player's inventory
+						play sound "entity.villager.no" at pitch 1 to player
+						send " " to player	
+						send "&cYou do not have the &4required items&c to rebirth:" to player
+						send "&4- &6⛃&e {@clicksW3}." to player
+				else if {_found} is false:
+					close player's inventory
+					play sound "entity.villager.no" at pitch 1 to player
+					send " " to player
+					send "&cYou do not have the &4required items&c to rebirth:" to player
+					send "&4- &5[&dExpert&5]&d Clicks +1000" to player
+					send "&4- &6⛃&e {@clicksW3}." to player					
+		else if index of event-slot is 15:
+			send "%{prefix}% &cIt seems you have decided to wait a bit longer for your rebirth." to player
+			close player's inventory
